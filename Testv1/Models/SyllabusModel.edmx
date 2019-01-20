@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LABTestDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblLanguages">
+          <Key>
+            <PropertyRef Name="colLanguageId" />
+          </Key>
+          <Property Name="colLanguageId" Type="int" Nullable="false" />
+          <Property Name="colLanguageName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="colLanguageShortName" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblLevels">
+          <Key>
+            <PropertyRef Name="colLevelId" />
+          </Key>
+          <Property Name="colLevelId" Type="int" Nullable="false" />
+          <Property Name="colLevelName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="colLevelDescription" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSyllabus">
+          <Key>
+            <PropertyRef Name="colSyllabusId" />
+          </Key>
+          <Property Name="colSyllabusId" Type="int" Nullable="false" />
+          <Property Name="colSyllabusName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="colTradeId" Type="int" Nullable="false" />
+          <Property Name="colLevelId" Type="int" Nullable="false" />
+          <Property Name="colSyllabusDocUrl" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="colTestPlanUrl" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="colDevelopmentOfficer" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="colManager" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="colActiveDt" Type="datetime" Nullable="false" />
+          <Property Name="colSt" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSyllabusLanguages">
+          <Key>
+            <PropertyRef Name="colSyllabusId" />
+            <PropertyRef Name="colLanguageId" />
+          </Key>
+          <Property Name="colSyllabusId" Type="int" Nullable="false" />
+          <Property Name="colLanguageId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTrades">
+          <Key>
+            <PropertyRef Name="colTradeId" />
+          </Key>
+          <Property Name="colTradeId" Type="int" Nullable="false" />
+          <Property Name="colTradeName" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="colAbbreviation" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LABTestDBModelStoreContainer">
+          <EntitySet Name="tblLanguages" EntityType="Self.tblLanguages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLevels" EntityType="Self.tblLevels" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSyllabus" EntityType="Self.tblSyllabus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblSyllabusLanguages" EntityType="Self.tblSyllabusLanguages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblTrades" EntityType="Self.tblTrades" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LABTestDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblLanguage">
+          <Key>
+            <PropertyRef Name="colLanguageId" />
+          </Key>
+          <Property Name="colLanguageId" Type="Int32" Nullable="false" />
+          <Property Name="colLanguageName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colLanguageShortName" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblLevel">
+          <Key>
+            <PropertyRef Name="colLevelId" />
+          </Key>
+          <Property Name="colLevelId" Type="Int32" Nullable="false" />
+          <Property Name="colLevelName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colLevelDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSyllabu">
+          <Key>
+            <PropertyRef Name="colSyllabusId" />
+          </Key>
+          <Property Name="colSyllabusId" Type="Int32" Nullable="false" />
+          <Property Name="colSyllabusName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colTradeId" Type="Int32" Nullable="false" />
+          <Property Name="colLevelId" Type="Int32" Nullable="false" />
+          <Property Name="colSyllabusDocUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colTestPlanUrl" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colDevelopmentOfficer" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colManager" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colActiveDt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="colSt" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblSyllabusLanguage">
+          <Key>
+            <PropertyRef Name="colSyllabusId" />
+            <PropertyRef Name="colLanguageId" />
+          </Key>
+          <Property Name="colSyllabusId" Type="Int32" Nullable="false" />
+          <Property Name="colLanguageId" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tblTrade">
+          <Key>
+            <PropertyRef Name="colTradeId" />
+          </Key>
+          <Property Name="colTradeId" Type="Int32" Nullable="false" />
+          <Property Name="colTradeName" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="colAbbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LABTestDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblLanguages" EntityType="Self.tblLanguage" />
+          <EntitySet Name="tblLevels" EntityType="Self.tblLevel" />
+          <EntitySet Name="tblSyllabus" EntityType="Self.tblSyllabu" />
+          <EntitySet Name="tblSyllabusLanguages" EntityType="Self.tblSyllabusLanguage" />
+          <EntitySet Name="tblTrades" EntityType="Self.tblTrade" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LABTestDBModelStoreContainer" CdmEntityContainer="LABTestDBEntities">
+          <EntitySetMapping Name="tblLanguages">
+            <EntityTypeMapping TypeName="LABTestDBModel.tblLanguage">
+              <MappingFragment StoreEntitySet="tblLanguages">
+                <ScalarProperty Name="colLanguageId" ColumnName="colLanguageId" />
+                <ScalarProperty Name="colLanguageName" ColumnName="colLanguageName" />
+                <ScalarProperty Name="colLanguageShortName" ColumnName="colLanguageShortName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLevels">
+            <EntityTypeMapping TypeName="LABTestDBModel.tblLevel">
+              <MappingFragment StoreEntitySet="tblLevels">
+                <ScalarProperty Name="colLevelId" ColumnName="colLevelId" />
+                <ScalarProperty Name="colLevelName" ColumnName="colLevelName" />
+                <ScalarProperty Name="colLevelDescription" ColumnName="colLevelDescription" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSyllabus">
+            <EntityTypeMapping TypeName="LABTestDBModel.tblSyllabu">
+              <MappingFragment StoreEntitySet="tblSyllabus">
+                <ScalarProperty Name="colSyllabusId" ColumnName="colSyllabusId" />
+                <ScalarProperty Name="colSyllabusName" ColumnName="colSyllabusName" />
+                <ScalarProperty Name="colTradeId" ColumnName="colTradeId" />
+                <ScalarProperty Name="colLevelId" ColumnName="colLevelId" />
+                <ScalarProperty Name="colSyllabusDocUrl" ColumnName="colSyllabusDocUrl" />
+                <ScalarProperty Name="colTestPlanUrl" ColumnName="colTestPlanUrl" />
+                <ScalarProperty Name="colDevelopmentOfficer" ColumnName="colDevelopmentOfficer" />
+                <ScalarProperty Name="colManager" ColumnName="colManager" />
+                <ScalarProperty Name="colActiveDt" ColumnName="colActiveDt" />
+                <ScalarProperty Name="colSt" ColumnName="colSt" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblSyllabusLanguages">
+            <EntityTypeMapping TypeName="LABTestDBModel.tblSyllabusLanguage">
+              <MappingFragment StoreEntitySet="tblSyllabusLanguages">
+                <ScalarProperty Name="colSyllabusId" ColumnName="colSyllabusId" />
+                <ScalarProperty Name="colLanguageId" ColumnName="colLanguageId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblTrades">
+            <EntityTypeMapping TypeName="LABTestDBModel.tblTrade">
+              <MappingFragment StoreEntitySet="tblTrades">
+                <ScalarProperty Name="colTradeId" ColumnName="colTradeId" />
+                <ScalarProperty Name="colTradeName" ColumnName="colTradeName" />
+                <ScalarProperty Name="colAbbreviation" ColumnName="colAbbreviation" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
