@@ -1,0 +1,464 @@
+﻿@*@using Testv1.Models
+    @{
+        ViewBag.Title = "Edit";
+        Layout = "~/Views/Shared/_Layout.cshtml";
+
+        tblSyllabu syllabus = ViewBag.Syllabus;
+        List<tblTrade> tradeList = ViewBag.Trade;
+        List<tblLevel> levelList = ViewBag.Level;
+        List<int> syllabusLanguageId = ViewBag.SyllabusLanguageId;
+        List<tblLanguage> languageList = ViewBag.Language;
+
+
+
+        var dt = Convert.ToDateTime(syllabus.colActiveDt);
+        var activeDate = String.Format("{0:yyyy-MM-dd}", dt);
+    }
+
+    <style>
+        label.error {
+            color: brown;
+        }
+
+        #syllabusAndtestPlanFileAlert {
+            color: brown;
+        }
+    </style>
+
+
+    <h2>Edit</h2>
+
+    <form method="Post" id="addSyllabus" enctype="multipart/form-data">
+        <label for="colTradeId">Trade:</label>
+        <select id="colTradeId" name="colTradeId" class="form-control">
+            <option value="">Please Select....</option>
+            @foreach (var tradeItem in tradeList)
+            {
+                if (tradeItem.colTradeId == syllabus.colTradeId)
+                {
+                    <option value="@tradeItem.colTradeId" selected>@tradeItem.colTradeName</option>
+                }
+
+                else
+                {
+                    <option value="@tradeItem.colTradeId">@tradeItem.colTradeName</option>
+                }
+
+
+            }
+        </select>
+
+        <br />
+        <label for="colLevelId">Level:</label>
+        <select id="colLevelId" name="colLevelId" class="form-control">
+            <option value="">Please Select....</option>
+            @foreach (var levelItem in levelList)
+            {
+                if (levelItem.colLevelId == syllabus.colLevelId)
+                {
+                    <option value="@levelItem.colLevelId" selected>@levelItem.colLevelName</option>
+                }
+
+                else
+                {
+                    <option value="@levelItem.colLevelId">@levelItem.colLevelName</option>
+                }
+
+
+            }
+        </select>
+        <br />
+        <label for="colLanguageId">Language:</label>
+        @foreach (var languageItem in languageList)
+        {
+
+            if (syllabusLanguageId.Contains(languageItem.colLanguageId))
+            {
+
+                <input type="checkbox" checked name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+            }
+            else
+            {
+
+                <input type="checkbox" name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+            }
+
+
+        }
+
+        <br />
+
+
+        <label for="colSyllabusName">Sylabus Name:</label>
+        <input type="text" id="colSyllabusName" name="colSyllabusName" class="form-control" value="@syllabus.colSyllabusName" />
+        <br />
+
+        <label for="syllabusfile">Upload Syllabus:</label>
+        <input type="file" name="syllabusfile" id="syllabusfile" class="form-control" />
+        <h6 class="btn btn-info">@syllabus.colSyllabusDocUrl</h6>
+        <br />
+        <label for="testPlanFile">Upload Test Plan:</label>
+        <input type="file" name="testPlanFile" id="testPlanFile" class="form-control" />
+        <h6 class="btn btn-info">@syllabus.colTestPlanUrl</h6>
+        <br />
+        <b id="syllabusAndtestPlanFileAlert" style=""></b>
+        <br />
+        <label for="colDevelopmentOfficer">Development Officer:</label>
+        <input type="text" id="colDevelopmentOfficer" name="colDevelopmentOfficer" class="form-control" value="@syllabus.colDevelopmentOfficer" />
+        <br />
+        <label for="colManager">Manager:</label>
+        <input type="text" id="colManager" name="colManager" class="form-control" value="@syllabus.colManager" />
+        <br />
+        <label for="colActiveDt">Active Date:</label>
+        <input type="date" id="colActiveDt" name="colActiveDt" class="form-control" value="@activeDate" />
+
+        <br />
+
+
+        <input id="Save" type="submit" name="Update" value="Update" onclick=" return Checkfiles() " class="btn btn-primary" />
+        @Html.ActionLink("Cancel", "SyllabusList", "Syllabus", new { @class = "btn btn-danger " })
+
+
+
+    </form>
+
+
+
+
+    @section scripts {
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script>
+
+
+            $(document).ready(function () {
+                $("#addSyllabus").validate({
+                    // your code is here
+
+                    rules: {
+                        colTradeId: "required",
+                        colLevelId: "required",
+                        colLanguageId: "required",
+                        colSylabusName: "required",
+                        syllabusfile: "required",
+                        testPlanFile: "required",
+                        colDevelopmentOfficer: "required",
+                        colManager: "required",
+                        colActiveDt: "required"
+
+                    },
+                    messages: {
+                        colTradeId: "trade is required",
+                        colLevelId: "level is required",
+                        colLanguageId: "language is required",
+                        colSylabusName: "syllabus name is required",
+                        syllabusfile: "upload a syllabus file",
+                        testPlanFile: "upload a test plan",
+                        colDevelopmentOfficer: "development officer is required",
+                        colManager: "manager is required",
+                        colActiveDt: "active date is required"
+                    }
+
+                });
+            });
+
+
+
+
+
+
+            function Checkfiles() {
+                var file1 = document.getElementById('syllabusfile');
+                var file2 = document.getElementById('testPlanFile');
+                var file1Name = file1.value;
+                var file2Name = file2.value;
+                var extension1 = file1Name.substring(file1Name.lastIndexOf('.') + 1);
+                var extension2 = file2Name.substring(file2Name.lastIndexOf('.') + 1);
+                if ((extension1 == "pdf" || extension1 == "csv" || extension1 == "PDF" || extension1 == "CSV") && (extension2 == "pdf" || extension2 == "csv" || extension2 == "PDF" || extension2 == "CSV")) {
+                    return true;
+                }
+                else {
+                    syllabusAndtestPlanFileAlert.innerText = "Both Syllabus and Test Plan should be either in pdf or csv format";
+
+                    file1.focus();
+                    file2.focus();
+                    return false;
+                }
+            }
+
+
+                    //$(function () {
+                    //    $("button").on("click", function (event) {
+                    //        e.preventDefault();
+                    //        $(".hidden-control").attr("type", "text");
+                    //        $("form").submit();
+                    //    });
+                    //});
+
+
+        </script>
+
+    }*@
+
+
+
+
+@using Testv1.Models
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    tblSyllabu syllabus = ViewBag.Syllabus;
+    List<tblTrade> tradeList = ViewBag.Trade;
+    List<tblLevel> levelList = ViewBag.Level;
+    List<int> syllabusLanguageId = ViewBag.SyllabusLanguageId;
+    List<tblLanguage> languageList = ViewBag.Language;
+
+
+
+    var dt = Convert.ToDateTime(syllabus.colActiveDt);
+    var activeDate = String.Format("{0:yyyy-MM-dd}", dt);
+}
+<div class="container">
+    <h4 class="margin_top">Edit Stored Result</h4>
+</div>
+
+<div class="container">
+
+
+    <form method="Post" id="addSyllabus" enctype="multipart/form-data" ng-app="myApp2" ng-controller="validateCtrl2">
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label for="colTradeId" class="font-weight-bold">Trade</label>
+                <select id="colTradeId" name="colTradeId" class="form-control" ng-model="tradereq">
+                    <option value="">Please Select</option>
+                    @foreach (var tradeItem in tradeList)
+                    {
+                        if (tradeItem.colTradeId == syllabus.colTradeId)
+                        {
+                            <option value="@tradeItem.colTradeId" selected>@tradeItem.colTradeName</option>
+                        }
+
+                        else
+                        {
+                            <option value="@tradeItem.colTradeId">@tradeItem.colTradeName</option>
+                        }
+
+
+                    }
+                </select>
+                <div ng-messages="myForm.tradereq.$error" style="color:maroon">
+                    <div ng-message="required">Trade is required</div>
+
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="colLevelId" class="font-weight-bold">Level</label>
+                <select id="colLevelId" name="colLevelId" class="form-control" ng-model="levelreq">
+                    <option value="">Please Select</option>
+                    @foreach (var levelItem in levelList)
+                    {
+                        if (levelItem.colLevelId == syllabus.colLevelId)
+                        {
+                            <option value="@levelItem.colLevelId" selected>@levelItem.colLevelName</option>
+                        }
+
+                        else
+                        {
+                            <option value="@levelItem.colLevelId">@levelItem.colLevelName</option>
+                        }
+
+
+                    }
+                </select>
+
+                <div ng-messages="myForm.levelreq.$error" style="color:maroon">
+                    <div ng-message="required">Level is required</div>
+
+                </div>
+            </div>
+            <div class="form-group col-md-3">
+
+                <label for="colLanguageId" class="font-weight-bold">Language</label> <br />
+                @foreach (var languageItem in languageList)
+                {
+
+
+                    if (syllabusLanguageId.Contains(languageItem.colLanguageId))
+                    {
+
+                        <input type="checkbox" checked name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+                        <br />
+                    }
+                    else
+                    {
+
+                        <input type="checkbox" name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+                        <br />
+                    }
+
+
+                }
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+
+                <label for="colSyllabusName" class="font-weight-bold">Sylabus Name</label>
+                <input type="text" id="colSyllabusName" name="colSyllabusName" class="form-control" value="@syllabus.colSyllabusName" ng-model="syllabusName" required />
+                <div ng-messages="myForm.syllabusName.$error" style="color:maroon">
+                    <div ng-message="required">Syllabus name is required</div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-7">
+
+                <label for="syllabusfile" class="font-weight-bold">Upload Syllabus</label>
+                <input type="file" name="syllabusfile" id="syllabusfile" class="form-control" onchange="angular.element(this).scope().setFile(this)" />
+                syllabusExt
+                <br />
+                <b id="syllabusFileAlert" style="color:red"></b>
+
+                <p class="btn btn-info">@syllabus.colSyllabusDocUrl</p>
+            </div>
+
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-7">
+
+
+                <label for="testPlanFile" class="font-weight-bold">Upload Test Plan</label>
+                <input type="file" name="testPlanFile" id="testPlanFile" class="form-control" />
+                <br />
+                <b id="testPlanFileALert" style="color:red"></b>
+                <p class="btn btn-info">@syllabus.colTestPlanUrl</p>
+
+            </div>
+
+        </div>
+
+
+        <div class="form-row">
+            <div class="form-group col-md-7">
+
+
+                <br />
+                <label for="colDevelopmentOfficer" class="font-weight-bold">Development Officer</label>
+                <input type="text" id="colDevelopmentOfficer" name="colDevelopmentOfficer" class="form-control" value="@syllabus.colDevelopmentOfficer" ng-model="developmentOfficer" required />
+                <div ng-messages="myForm.developmentOfficer.$error" style="color:maroon">
+                    <div ng-message="required">Development officer is required</div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="form-row">
+
+            <div class="form-group col-md-7">
+
+
+                <label for="colManager" class="font-weight-bold">Manager</label>
+                <input type="text" id="colManager" name="colManager" class="form-control" value="@syllabus.colManager" ng-model="manager" required />
+                <div ng-messages="myForm.manager.$error" style="color:maroon">
+                    <div ng-message="required">Development officer is required</div>
+
+                </div>
+            </div>
+        </div>
+        <div class="form-row">
+
+            <div class="form-group col-md-7">
+
+                <label for="colActiveDt" class="font-weight-bold">Active Date</label>
+                <input type="date" id="colActiveDt" name="colActiveDt" class="form-control" value="@activeDate" />
+            </div>
+        </div>
+
+
+        <input id="Save" type="submit" name="Update" value="Update" onclick=" return uploadCheck() " class="btn btn-primary" />
+        @Html.ActionLink("Cancel", "SyllabusList", "Syllabus", new { @class = "btn btn-danger " })
+
+
+
+    </form>
+
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/angular.min.js"></script>
+
+    <script type='text/javascript'>
+
+
+
+
+
+        //var app = angular.module('myApp', []);
+        //app.controller('validateCtrl', function ($scope) {
+
+        //});
+
+
+        function uploadCheck() {
+            var syllabusfile = document.getElementById('syllabusfile');
+            var testfile = document.getElementById('testPlanFile');
+            var file1Name = syllabusfile.value;
+            var file2Name = testfile.value;
+            var syllabusExt = file1Name.substring(file1Name.lastIndexOf('.') + 1);
+            var testplanExt = file2Name.substring(file2Name.lastIndexOf('.') + 1);
+            if (testplanExt == "pdf" || testplanExt == "PDF" && syllabusExt == "pdf" || syllabusExt == "PDF") {
+                return true;
+            }
+            else {
+                syllabusFileAlert.innerText = "Syllabus should be pdf format";
+                testPlanFileALert.innerText = "Test Plan should be pdf format";
+                syllabusfile.focus();
+                testfile.focus();
+                return false;
+            }
+
+        }
+
+        function resetFunction() {
+            document.getElementById("addSyllabus").reset();
+        }
+            //var myApp = angular.module('myApp', []);
+            //myApp.controller('validateCtrl', function ($scope) {
+            //    $scope.setFile = function (element) {
+            //        $scope.$apply(function ($scope) {
+            //            $scope.theFile = element.files[0];
+            //            $scope.FileMessage = '';
+            //            var filename = $scope.theFile.name;
+            //            console.log(filename.length)
+            //            var index = filename.lastIndexOf(".");
+            //            var strsubstring = filename.substring(index, filename.length);
+            //            if (strsubstring == '.pdf' || strsubstring == '.PDF') {
+            //                console.log('File Uploaded sucessfully');
+            //            }
+            //            else {
+            //                $scope.theFile = '';
+            //                $scope.FileMessage = 'please upload correct File Name, File extension should be only .pdf.';
+            //            }
+
+            //        });
+            //    };
+            //});
+
+
+    </script>
+    }
+
+
+
+
+
+
+
+
+
+
+

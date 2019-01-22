@@ -11,10 +11,16 @@ namespace Testv1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblLanguage
     {
+        
+        //[Required(ErrorMessage = "Language is required")]
+
         public int colLanguageId { get; set; }
+      //  [Required(ErrorMessage = "Language is required")]
+
         public string colLanguageName { get; set; }
         public string colLanguageShortName { get; set; }
     }

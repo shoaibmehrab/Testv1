@@ -1,0 +1,162 @@
+﻿@using Testv1.Models;
+@model List<tblSyllabu>
+@{
+    ViewBag.Title = "Show Syllabus";
+
+    List<string> languageList = ViewBag.Language;
+    List<string> tradeList = ViewBag.Trade;
+    List<string> levelList = ViewBag.Level;
+    List<string> syllabusName = ViewBag.SyllabusNameList;
+    List<tblTrade> totalTradetblList = ViewBag.TotalTradeList;
+    List<tblLevel> totalLevelList = ViewBag.TotalLevelList;
+    int i = 0;
+}
+<div class="container">
+    <h2 class="margin_top">List of Syllabus</h2>
+</div>
+
+
+
+
+<div class="container">
+    <form method="Post" id="searchSyllabus" enctype="multipart/form-data">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="colTradeId" class="font-weight-bold">Trade</label>
+                <select id="colTradeId" name="colTradeId" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var tradeItem in totalTradetblList)
+                    {
+                        <option value="@tradeItem.colTradeId">@tradeItem.colTradeName</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="colLevelId" class="font-weight-bold">Level</label>
+                <select id="colLevelId" name="colLevelId" class="form-control">
+                    <option value="">All</option>
+                    @foreach (var levelItem in totalLevelList)
+                    {
+                        <option value="@levelItem.colLevelId">@levelItem.colLevelName</option>
+                    }
+                </select>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label class="font-weight-bold">Search</label>
+                <br />
+                <i class="fa fa-search"></i> <input id="Search" type="submit" name="Search" value="Search here" class="btn btn-primary" />
+
+            </div>
+
+        </div>
+
+
+
+    </form>
+
+</div>
+
+
+
+<div class="container">
+
+    <div class="table-responsive-sm">
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="bg-dark">
+                <tr>
+
+
+                    <th style="color:white">
+                        Action
+                    </th>
+
+                    <th style="color:white">
+                        Syllabus
+                    </th>
+                    <th style="color:white">
+                        Trade
+                    </th>
+                    <th style="color:white">
+                        Level
+                    </th>
+                    <th style="color:white">
+                        Uploaded Syllabus
+                    </th>
+                    <th style="color:white">
+                        Uploaded Test Plan
+                    </th>
+                    <th style="color:white">
+                        Languages
+                    </th>
+                    <th style="color:white">
+                        Active Date
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                @foreach (var sylValue in Model)
+                {
+
+                    <tr>
+
+                        <td>
+
+                            @Html.ActionLink("edit", "Edit", "Syllabus", new { id = sylValue.colSyllabusId }, new { @class = "btn btn-xs btn-success " })
+                        </td>
+                        <td>
+                            @syllabusName[i]
+
+
+                        </td>
+                        <td>
+                            @tradeList[i]
+                        </td>
+                        <td>
+                            @levelList[i]
+                        </td>
+                        <td>
+                            @*@sylValue.colSyllabusDocUrl*@
+                            @Html.ActionLink(@sylValue.colSyllabusDocUrl, "Download", new { filePath = @sylValue.colSyllabusDocUrl })
+
+                        </td>
+
+                        <td>
+                            @*@sylValue.colTestPlanUrl*@
+
+                            @Html.ActionLink(@sylValue.colTestPlanUrl, "Download", new { filePath = @sylValue.colTestPlanUrl })
+
+                        </td>
+                        <td>
+                            @languageList[i]
+                        </td>
+                        <td>
+                            @sylValue.colActiveDt
+                        </td>
+                    </tr>
+
+                    i = i + 1;
+                }
+
+            </tbody>
+
+
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

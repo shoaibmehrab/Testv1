@@ -11,17 +11,32 @@ namespace Testv1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblSyllabu
     {
         public int colSyllabusId { get; set; }
+
+      //  [Required(ErrorMessage = "Syllabus name is required")]
         public string colSyllabusName { get; set; }
+
+     //   [Required(ErrorMessage = "Trade is required")]
         public int colTradeId { get; set; }
+
+       // [Required(ErrorMessage = "Level is required")]
         public int colLevelId { get; set; }
+
+      //  [Required(ErrorMessage = "Upload syllabus is required")]
         public string colSyllabusDocUrl { get; set; }
+
+      //  [Required(ErrorMessage = "upload test plan is required")]
         public string colTestPlanUrl { get; set; }
+
+    //   [Required(ErrorMessage = "Development officer name is required")]
         public string colDevelopmentOfficer { get; set; }
+    //    [Required(ErrorMessage = "Manager name is required")]
         public string colManager { get; set; }
+     //   [Required(ErrorMessage = "Date is required")]
         public System.DateTime colActiveDt { get; set; }
         public bool colSt { get; set; }
     }

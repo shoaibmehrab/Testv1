@@ -11,10 +11,13 @@ namespace Testv1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblSyllabusLanguage
     {
         public int colSyllabusId { get; set; }
+      //  [Required(ErrorMessage = "language is required")]
+
         public int colLanguageId { get; set; }
     }
 }

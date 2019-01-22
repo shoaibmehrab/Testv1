@@ -11,9 +11,13 @@ namespace Testv1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblLevel
     {
+
+     //   [Required(ErrorMessage = "Level is required")]
+
         public int colLevelId { get; set; }
         public string colLevelName { get; set; }
         public string colLevelDescription { get; set; }

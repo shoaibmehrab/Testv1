@@ -11,9 +11,13 @@ namespace Testv1.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using System.ComponentModel.DataAnnotations;
+
     public partial class tblTrade
     {
+
+     //   [Required(ErrorMessage = "Trade is required")]
+
         public int colTradeId { get; set; }
         public string colTradeName { get; set; }
         public string colAbbreviation { get; set; }
