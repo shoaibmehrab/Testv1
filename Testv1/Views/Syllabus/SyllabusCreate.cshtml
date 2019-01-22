@@ -1,0 +1,76 @@
+﻿@using  Testv1.Models
+@{
+    ViewBag.Title = "SyllabusCreate";
+    List<tblTrade> tradeList = ViewBag.Trade;
+    List<tblLevel> lavelList = ViewBag.Level;
+    List<tblLanguage> languageList = ViewBag.Language;
+}
+<div class="container">
+    <hr />
+</div>
+<div class="container">
+    <form method="post" id="postSyllabus" enctype="application/x-www-form-urlencoded">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="colTradeId">Trade</label>
+                    <select id="colTradeId" name="colTradeId" class="form-control">
+                        <option value="">
+                            Please Select
+                        </option>
+                        @foreach (var tradeiem in tradeList)
+                        {
+                            <option value="@tradeiem.colTradeId">@tradeiem.colTradeName</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="colLevelId">Level</label>
+                    <select id="colLevelId" name="colLevelId" class="form-control">
+                        <option value="">
+                            Please Select
+                        </option>
+                        @foreach (var leveleiem in lavelList)
+                        {
+                            <option value="@leveleiem.colLevelId">@leveleiem.colLevelName</option>
+                        }
+                    </select>
+
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label for="colLanguageId">Language</label>
+                    <br />
+
+                    @foreach (var languageItem in languageList)
+                    {
+                        if (languageItem.colLanguageName == "English")
+                        {
+
+                            <input type="checkbox" checked name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+                            <br />
+                        }
+                        else
+                        {
+
+                            <input type="checkbox" name="colLanguageId" value=@languageItem.colLanguageId />@languageItem.colLanguageName
+                            <br />
+                        }
+                    }
+
+                </div>
+            </div>
+        </div>
+        
+
+
+    </form>
+</div>
+<hr />
+
+
+
