@@ -5,11 +5,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Testv1.Models;
+using PagedList;
+using PagedList.Mvc;
 
 namespace Testv1.Controllers
 {
     public class SyllabusController : Controller
     {
+
 
 
         LABTestDBEntities db = new LABTestDBEntities();
@@ -21,6 +24,7 @@ namespace Testv1.Controllers
         public ActionResult SyllabusCreate()
         {
             var tradeList = db.tblTrades.ToList();
+            
             ViewBag.Trade = tradeList;
             var levelList = db.tblLevels.ToList();
             ViewBag.Level = levelList;
@@ -31,7 +35,7 @@ namespace Testv1.Controllers
         }
 
         [HttpPost]
-        public ActionResult SyllabusCreate(tblSyllabu syllabusObject, int[] colLanguageId, HttpPostedFileBase syllabusfile, HttpPostedFileBase testPlanFile)
+        public ActionResult SyllabusCreate(HttpPostedFileBase syllabusfile, HttpPostedFileBase testPlanFile, tblSyllabu syllabusObject, int[] colLanguageId)
         {
 
 
@@ -40,12 +44,13 @@ namespace Testv1.Controllers
             {
                 var fileName = Path.GetFileName(syllabusfile.FileName);
                 var guid = Guid.NewGuid().ToString();
-                var path = Path.Combine(Server.MapPath("~/uploadSyllabus"), guid + fileName);
+                var path = Path.Combine(Server.MapPath("~/uploadSyllabus/files"), guid + fileName);
+               
                 syllabusfile.SaveAs(path);
                 string fl = path.Substring(path.LastIndexOf("\\"));
                 string[] split = fl.Split('\\');
                 string newpath = split[1];
-                string sylpath = "~/uploadSyllabus/" + newpath;
+                string sylpath = "~/uploadSyllabus/files/" + newpath;
                 syllabusObject.colSyllabusDocUrl = sylpath;
 
             }
@@ -55,12 +60,12 @@ namespace Testv1.Controllers
 
                 var fileName = Path.GetFileName(testPlanFile.FileName);
                 var guid = Guid.NewGuid().ToString();
-                var path = Path.Combine(Server.MapPath("~/uploadTestPlan"), guid + fileName);
+                var path = Path.Combine(Server.MapPath("~/uploadTestPlan/files"), guid + fileName);
                 syllabusfile.SaveAs(path);
                 string fl = path.Substring(path.LastIndexOf("\\"));
                 string[] split = fl.Split('\\');
                 string newpath = split[1];
-                string testpath = "~/uploadTestPlan/" + newpath;
+                string testpath = "~/uploadTestPlan/files/" + newpath;
                 syllabusObject.colTestPlanUrl = testpath;
 
 
@@ -85,16 +90,16 @@ namespace Testv1.Controllers
                 }
 
                 db.tblSyllabus.Add(syllabusObject);
-                var message = db.SaveChanges();
+                db.SaveChanges();
 
                 foreach (var lang in syllabusLanguagesList)
                 {
                     db.tblSyllabusLanguages.Add(lang);
-                    var message2 = db.SaveChanges();
-
+                    db.SaveChanges();
                 }
 
 
+                
 
 
 
@@ -128,7 +133,7 @@ namespace Testv1.Controllers
 
 
         [HttpGet]
-        public ActionResult SyllabusList()
+        public ActionResult SyllabusList(int page = 1, int pageSize = 5)
         {
             Session["SyllabusId"] = null;
             List<tblSyllabu> syllabusList = db.tblSyllabus.ToList();
@@ -170,9 +175,9 @@ namespace Testv1.Controllers
 
             foreach (var syllabus in syllabusList)
             {
-                string eachTradeName =
-                    (from p in totalTrades where p.colTradeId == syllabus.colTradeId select p.colTradeName)
-                        .SingleOrDefault();
+                string eachTradeName = (from p in totalTrades
+                                        where p.colTradeId == syllabus.colTradeId
+                                        select p.colTradeName).SingleOrDefault();
 
                 tradeName.Add(eachTradeName);
 
@@ -183,13 +188,15 @@ namespace Testv1.Controllers
 
             foreach (var syllabus in syllabusList)
             {
-                string eachLevelName =
-                    (from p in totalLevels where p.colLevelId == syllabus.colLevelId select p.colLevelName)
-                        .SingleOrDefault();
+                string eachLevelName = (from p in totalLevels
+                                        where p.colLevelId == syllabus.colLevelId
+                                        select p.colLevelName).SingleOrDefault();
 
                 levelName.Add(eachLevelName);
 
             }
+
+
 
             ViewBag.SyllabusList = syllabusList;
             ViewBag.Language = eachSyllabusLanguage;
@@ -198,12 +205,10 @@ namespace Testv1.Controllers
             ViewBag.SyllabusNameList = syllabusName;
             ViewBag.TotalTradeList = totalTrades;
             ViewBag.TotalLevelList = totalLevels;
-            //List<string> testString = eachSyllabusLanguage;
-            //List<string> testName = syllabusName;
-            //List<string> testTrade = tradeName;
-            //List<string> testLevel = levelName;
-            //int a;
 
+
+            //List<tblSyllabu> listAll = db.tblSyllabus.ToList();
+            //PagedList<tblSyllabu> listofpage = new PagedList<tblSyllabu>(listAll, page, pageSize);
             return View(syllabusList);
         }
 
@@ -264,9 +269,9 @@ namespace Testv1.Controllers
 
                 foreach (var syllabus in syllabusList)
                 {
-                    string eachTradeName =
-                        (from p in totalTrades where p.colTradeId == syllabus.colTradeId select p.colTradeName)
-                            .SingleOrDefault();
+                    string eachTradeName =(from p in totalTrades
+                                           where p.colTradeId == syllabus.colTradeId
+                                           select p.colTradeName).SingleOrDefault();
 
                     tradeName.Add(eachTradeName);
 
@@ -277,9 +282,9 @@ namespace Testv1.Controllers
 
                 foreach (var syllabus in syllabusList)
                 {
-                    string eachLevelName =
-                        (from p in totalLevels where p.colLevelId == syllabus.colLevelId select p.colLevelName)
-                            .SingleOrDefault();
+                    string eachLevelName = (from p in totalLevels
+                                            where p.colLevelId == syllabus.colLevelId
+                                            select p.colLevelName).SingleOrDefault();
 
                     levelName.Add(eachLevelName);
 
@@ -291,7 +296,6 @@ namespace Testv1.Controllers
                 ViewBag.Level = levelName;
                 ViewBag.SyllabusNameList = syllabusName;
 
-                //int debugger;
 
                 return View(syllabusList);
 
@@ -374,7 +378,7 @@ namespace Testv1.Controllers
                 ViewBag.Level = levelName;
                 ViewBag.SyllabusNameList = syllabusName;
 
-                int debugger;
+               
 
                 return View(syllabusList);
 
@@ -457,12 +461,12 @@ namespace Testv1.Controllers
                 ViewBag.Level = levelName;
                 ViewBag.SyllabusNameList = syllabusName;
 
-                int debugger;
+                
 
                 return View(syllabusList);
 
 
-                //return View();
+               
             }
 
 
@@ -495,8 +499,10 @@ namespace Testv1.Controllers
 
                 Session["SyllabusId"] = id;
 
-                tblSyllabu syllabusDetails =
-                    (from p in db.tblSyllabus where p.colSyllabusId == id select p).SingleOrDefault();
+                tblSyllabu syllabusDetails = (from p in db.tblSyllabus
+                                              where p.colSyllabusId == id
+                                              select p).SingleOrDefault();
+
                 var languageList =
                      db.tblSyllabusLanguages.Where(x => x.colSyllabusId == id).Select(x => x.colLanguageId).ToList();
 
@@ -525,12 +531,12 @@ namespace Testv1.Controllers
             {
                 var fileName = Path.GetFileName(syllabusfile.FileName);
                 var guid = Guid.NewGuid().ToString();
-                var path = Path.Combine(Server.MapPath("~/uploadSyllabus"), guid + fileName);
+                var path = Path.Combine(Server.MapPath("~/uploadSyllabus/files"), guid + fileName);
                 syllabusfile.SaveAs(path);
                 string fl = path.Substring(path.LastIndexOf("\\"));
                 string[] split = fl.Split('\\');
                 string newpath = split[1];
-                string sylpath = "~/uploadSyllabus/" + newpath;
+                string sylpath = "~/uploadSyllabus/files/" + newpath;
                 syllabusObject.colSyllabusDocUrl = sylpath;
 
             }
@@ -540,12 +546,12 @@ namespace Testv1.Controllers
 
                 var fileName = Path.GetFileName(testPlanFile.FileName);
                 var guid = Guid.NewGuid().ToString();
-                var path = Path.Combine(Server.MapPath("~/uploadTestPlan"), guid + fileName);
+                var path = Path.Combine(Server.MapPath("~/uploadTestPlan/files"), guid + fileName);
                 syllabusfile.SaveAs(path);
                 string fl = path.Substring(path.LastIndexOf("\\"));
                 string[] split = fl.Split('\\');
                 string newpath = split[1];
-                string testpath = "~/uploadTestPlan/" + newpath;
+                string testpath = "~/uploadTestPlan/files/" + newpath;
                 syllabusObject.colTestPlanUrl = testpath;
 
 
@@ -593,7 +599,7 @@ namespace Testv1.Controllers
                 syllabusLanguage.colSyllabusId = syllabusObject.colSyllabusId;
                 syllabusLanguage.colLanguageId = id;
                 db.tblSyllabusLanguages.Add(syllabusLanguage);
-                // syllabusLanguagesList.Add(syllabusLanguage);
+                
                 db.SaveChanges();
 
             }

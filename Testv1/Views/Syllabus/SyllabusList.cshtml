@@ -1,4 +1,6 @@
 ﻿@using Testv1.Models;
+@*@using PagedList.Mvc;
+@model PagedList.IPagedList<Testv1.Models.tblSyllabu>*@
 @model List<tblSyllabu>
 @{
     ViewBag.Title = "Show Syllabus";
@@ -144,6 +146,10 @@
 
 
         </table>
+        <br />
+        @*@Html.PagedListPager(Model, page => Url.Action("syllabusList", 
+       new { page }))*@
+
     </div>
 </div>
 
